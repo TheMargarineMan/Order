@@ -2,12 +2,20 @@ from datetime import datetime
 
 class Message():
     """Object for storing messages and related metadata"""
-    __slots__ = ('id', 'message', 'edited', 'timestamp', 'user_id', 'chat_id')
+    __slots__ = ('message', 'edited', 'timestamp', 'username', 'chatname')
 
-    def __init__(self, message: str, edited: bool, timestamp: datetime, user_id: int, chat_id: int, id: int = 0):
-        self.message = message
-        self.edited = edited
-        self.timestamp = timestamp
-        self.user_id = user_id
-        self.chat_id = chat_id
-        self.id = id
+    def __init__(self, data):
+        if (type(data) == dict):
+            self.message = data.get('message')
+            self.edited = data.get('edited')
+            self.timestamp = data.get('timestamp')
+            self.username = data.get('username')
+            self.chatname = data.get('chatname')
+
+        elif (type(data) -- list):
+            self.message = data[0]
+            self.edited = data[1]
+            self.timestamp = data[2]
+            self.username = data[3]
+            self.chatname = data[4]
+            

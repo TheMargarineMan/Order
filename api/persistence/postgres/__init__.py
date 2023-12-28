@@ -2,47 +2,54 @@ from psycopg_pool import ConnectionPool
 import yaml
 from pathlib import Path
 
-CONFIG_PATH = Path(__file__).parent / "../config/postgres.yml"
+_CONFIG_PATH = Path(__file__).parent / "../config/postgres.yaml"
 
-ARGS = yaml.load(open(CONFIG_PATH, 'r'))
+# Load arguments from file 
+with open(_CONFIG_PATH, 'r') as config_file:
+    _ARGS = yaml.load(config_file, Loader=yaml.FullLoader)
 
-CONNINFO = f'host={ARGS['host']};'
-           + f'port={ARGS['port']};'
-           + f'dbname={ARGS['database']};'
-           + f'user{ARGS['user']};'
-           + f'password={ARGS['password']}'
+# Format arguments into acceptable format for ConnectionPool
+_CONNINFO = f'host={_ARGS["host"]} ' \
++ f'port={_ARGS["port"]} ' \
++ f'dbname={_ARGS["database"]} ' \
++ f'user={_ARGS["user"]} ' \
++ f'password={_ARGS["password"]}'
 
-CONNPOOL = ConnectionPool(CONNINFO)
+_CONNPOOL = ConnectionPool(_CONNINFO)
 
 def exec_file(path):
-    with CONNPOOL.connection() as conn:
+    """Execute code that exists in file""" 
+    with _CONNPOOL.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(open(path, 'r').read())
-            conn.commit()
+            with open(path, 'r') as file:
+                cur.execute(file.read())
+                conn.commit()
 
 def exec_get_one(query, args={}):
-    with CONNPOOL.connection() as conn:
+    """Get first match to query"""
+    with _CONNPOOL.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(query, args)
             return cur.fetchone()
         
 def exec_get_all(query, args={}):
-    with CONNPOOL.connection() as conn:
+    """Get all matches to query"""
+    with _CONNPOOL.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(query, args={})
+            cur.execute(query, args)
             return cur.fetchall()
 
 def exec_commit(query, args={}):
-    with CONNPOOL.connection() as conn:
+    """Commits changes to DB"""
+    with _CONNPOOL.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(query, args)
             conn.commit()
 
 def exec_commit_return(query, args={}):
-    with CONNPOOL.connection() as conn:
+    """Commits changes to DB then returns values requested for in query"""
+    with _CONNPOOL.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(query, args)
             conn.commit()
             return cur.fetchone()
-    
-    

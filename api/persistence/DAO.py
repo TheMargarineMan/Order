@@ -1,13 +1,9 @@
+from __future__ import absolute_import
 from abc import ABC, abstractmethod
-from ..model.Message import Message
+from model.Message import Message
 
 class MessageDAO(ABC):
     
-    @abstractmethod
-    def getMessage(id: int) -> Message:
-        """Retrieves message from persistence returning contents."""
-        pass
-
     @abstractmethod
     def getMessages(args: dict) -> list:
         """Retrieves messages from persistence following criteria."""

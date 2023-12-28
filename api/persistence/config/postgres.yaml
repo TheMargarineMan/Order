@@ -1,0 +1,7 @@
+# Fill in information for the database you will connect to
+
+host: localhost
+port: 5432
+database: order_chat
+user: order_chat
+password: SuperSecret
