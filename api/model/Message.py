@@ -13,7 +13,7 @@ class Message():
             self.username = data.get('username')
             self.chatname = data.get('chatname')
 
-        elif (type(data) -- list):
+        elif (type(data) == list):
             self.id = data[0]
             self.message = data[1]
             self.edited = data[2]
