@@ -20,8 +20,8 @@ class MessageDAO(ABC):
         pass
 
     @abstractmethod
-    def editMessage(message: Message) -> Message:
-        """Modifies existing message in persistence, returning modified message."""
+    def editMessage(message: Message) -> None:
+        """Modifies existing message in persistence."""
         pass
     
 

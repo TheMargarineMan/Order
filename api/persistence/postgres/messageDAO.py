@@ -7,7 +7,7 @@ class PostgresMessageDAO(MessageDAO):
 
     def getMessages(self, args: dict) -> list:
         # Initial query to be modified
-        query = ''' SELECT message, edited, timestamp, username, chatname
+        query = ''' SELECT messages.id, message, edited, timestamp, username, chatname
                     FROM messages
                     INNER JOIN chats ON messages.chat_id = chats.id
                     INNER JOIN users ON messages.user_id = users.id
@@ -44,5 +44,5 @@ class PostgresMessageDAO(MessageDAO):
     def deleteMessage(self, id: int) -> None:
         pass
 
-    def editMessage(self, message: Message) -> Message:
+    def editMessage(self, message: Message) -> None:
         pass
