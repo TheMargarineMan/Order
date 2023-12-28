@@ -6,7 +6,7 @@ class Message():
 
     def __init__(self, data):
         if (type(data) == dict):
-            self.id = data.get('id')
+            self.id = data.get('id', None)
             self.message = data.get('message')
             self.edited = data.get('edited')
             self.timestamp = data.get('timestamp')
@@ -20,4 +20,12 @@ class Message():
             self.timestamp = data[3]
             self.username = data[4]
             self.chatname = data[5]
-            
+
+    def asList(self) -> list:
+        return [
+            self.message,
+            self.edited,
+            self.timestamp,
+            self.username,
+            self.chatname
+        ]

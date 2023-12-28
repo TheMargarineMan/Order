@@ -3,6 +3,7 @@ from unittest import TestCase
 from datetime import datetime
 from persistence.postgres.messageDAO import PostgresMessageDAO
 from persistence.postgres.__init__ import exec_file, exec_commit
+from model.Message import Message
 
 class TestPostgresMessageDAO(TestCase):
 
@@ -22,7 +23,7 @@ class TestPostgresMessageDAO(TestCase):
     @classmethod
     def setUpClass(self):
         # Loads test data destructively
-        exec_file('test/persistence/postgres/testData.sql')
+        self.resetFile = 'test/persistence/postgres/testData.sql'
         self.messageDAO = PostgresMessageDAO()
         
     @classmethod
@@ -31,7 +32,10 @@ class TestPostgresMessageDAO(TestCase):
         exec_commit("""DELETE FROM messages;
                     DELETE FROM chats;
                     DELETE FROM users;""")
-
+    
+    def setUp(self):
+        exec_file(self.resetFile)
+    
     def testGetMessagesChatOne(self):
         args = { 'chatname': 'Erdtree Sanctuary' }
 
@@ -85,4 +89,78 @@ class TestPostgresMessageDAO(TestCase):
         expected = self.data[4:2:-1]
         result = self.messageDAO.getMessages(args)
     
+        self.assertEqual(expected, result)
+
+    def testGetMessageGarbageParam(self):
+        args = { 'chatname': 'Erdtree Sanctuary', 'garbage': 'garbage' }
+
+        expected = self.data[4::-1]
+        result = self.messageDAO.getMessages(args)
+
+        self.assertEqual(expected, result)
+
+    def testCreateMessage(self):
+        message = Message({
+            "message": "Shadow Wizard Money Gang",
+            "edited": False,
+            "timestamp": datetime(2012, 7, 18, 10, 0, 0),
+            "username": "Melina",
+            "chatname": "Grand Study Hall"
+        })
+
+        # Test if returned id was as expected        
+        result = self.messageDAO.createMessage(message)
+        expected = 11
+        
+        self.assertEqual(expected, result)
+
+        # Test existence in chatroom
+        args = { "chatname": "Grand Study Hall" }
+            
+        expected = [(11, "Shadow Wizard Money Gang", False, datetime(2012, 7, 18, 10, 0, 0), "Melina", "Grand Study Hall")]
+        result = self.messageDAO.getMessages(args)
+
+        self.assertEqual(expected, result)
+
+    def testDeleteMessage(self):
+        id = 10
+
+        self.messageDAO.deleteMessage(id)
+
+        args = { 'chatname': 'Radahns Battlefield' }
+    
+        expected = self.data[8:4:-1]
+        result = self.messageDAO.getMessages(args)
+
+        self.assertEqual(expected, result)
+
+    def testDeleteMessageFalseID(self):
+        id = 999
+
+        self.messageDAO.deleteMessage(id)
+
+        args = { 'chatname': 'Radahns Battlefield' }
+    
+        expected = self.data[9:4:-1]
+        result = self.messageDAO.getMessages(args)
+
+        self.assertEqual(expected, result)
+
+    def testEditMessage(self):
+        message = Message({
+            'id': 4,
+            'message': 'Nah not with the club man',
+            'edited': False,
+            'timestamp': datetime(2012, 7, 17, 10, 3, 15),
+            'username': 'Morgott',
+            'chatname': 'Erdtree Sanctuary'
+        })
+
+        self.messageDAO.editMessage(message)
+
+        args = { 'chatname': 'Erdtree Sanctuary' }
+        expected = self.data[4::-1]
+        expected[1] = (4, 'Nah not with the club man', True, datetime(2012, 7, 17, 10, 3, 15), 'Morgott', 'Erdtree Sanctuary')
+        result = self.messageDAO.getMessages(args)
+
         self.assertEqual(expected, result)

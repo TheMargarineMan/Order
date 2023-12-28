@@ -52,4 +52,4 @@ def exec_commit_return(query, args={}):
         with conn.cursor() as cur:
             cur.execute(query, args)
             conn.commit()
-            return cur.fetchone()
+            return cur.fetchone()[0]
