@@ -29,9 +29,11 @@ class TestPostgresMessageDAO(TestCase):
     @classmethod
     def tearDownClass(self):
         # Destroys all test data
-        exec_commit("""DELETE FROM messages;
-                    DELETE FROM chats;
-                    DELETE FROM users;""")
+        exec_commit("""
+            DELETE FROM messages;
+            DELETE FROM chats;
+            DELETE FROM users;
+        """)
     
     def setUp(self):
         exec_file(self.resetFile)
