@@ -1,7 +1,7 @@
 FROM archlinux:base-devel
 
 RUN pacman -Syu --noconfirm && \
-    pacman -S --noconfirm git python python-psycopg python-psycopg-pool python-yaml python-fastapi postgresql
+    pacman -S --noconfirm git python python-psycopg python-psycopg-pool python-yaml python-fastapi postgresql uvicorn
 
 RUN systemctl enable postgresql.service && \
     mkdir /var/run/postgresql && \
@@ -13,6 +13,7 @@ RUN su - postgres -c 'initdb --locale=C.UTF-8 --encoding=UTF8 -D /var/lib/postgr
     su - postgres -c 'pg_ctl stop -D /var/lib/postgres/data'
 
 RUN cd /srv && \
-    git clone https://github.com/TheMargarineMan/Order
+    git clone --branch docker https://github.com/TheMargarineMan/Order && \
+    chmod +x /srv/Order/dockerfiles/entrypoint.sh
 
-ENTRYPOINT [/srv/Order/dockerfiles/entrypoint.sh]
+ENTRYPOINT ["/srv/Order/dockerfiles/entrypoint.sh"]
