@@ -1,7 +1,7 @@
 FROM archlinux:base-devel
 
 RUN pacman -Syu --noconfirm && \
-    pacman -S --noconfirm git python python-psycopg python-psycopg-pool python-yaml python-fastapi postgresql uvicorn
+    pacman -S --noconfirm git python python-psycopg python-psycopg-pool python-yaml python-fastapi postgresql uvicorn npm
 
 RUN systemctl enable postgresql.service && \
     mkdir /var/run/postgresql && \
