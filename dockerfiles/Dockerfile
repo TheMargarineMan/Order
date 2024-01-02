@@ -16,4 +16,6 @@ WORKDIR /srv/Order
 
 COPY ./ ./
 
+RUN cd order-ui/ && npm run build
+
 ENTRYPOINT ["./dockerfiles/entrypoint.sh"]
