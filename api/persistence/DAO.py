@@ -23,9 +23,38 @@ class MessageDAO(ABC):
     def editMessage(message: Message) -> None:
         """Modifies existing message in persistence."""
         pass
-    
 
-# TODO: UserDAO/User Auth Utils
+class UserDAO(ABC):
+
+    @abstractmethod
+    def getSalt(username: str) -> str:
+        """Returns the salt belonging to the user"""
+        pass
+
+    @abstractmethod
+    def checkHash(username: str, pass_hash: bytes) -> bool:
+        """Returns whether the password hash matches in persistence"""
+        pass
+
+    @abstractmethod
+    def getUsers() -> list:
+        """Returns a list of all users"""
+        pass
+
+    @abstractmethod
+    def createUser(username: str, pass_hash: bytes, salt: str) -> None:
+        """Creates a user in persistence"""
+        pass
+
+    @abstractmethod
+    def setPassHash(username: str, pass_hash: bytes, salt: str) -> None:
+        """Replaces pass_hash and salt for existing user"""
+        pass
+
+    @abstractmethod
+    def setUsername(old_username: str, new_username: str) -> None:
+        """Changes out the username for an existing user"""
+        pass
 
 # TODO: CommunityDAO
 # TODO: ChatDAO

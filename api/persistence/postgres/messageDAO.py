@@ -7,11 +7,13 @@ class PostgresMessageDAO(MessageDAO):
 
     def getMessages(self, args: dict) -> list:
         # Initial query to be modified
-        query = ''' SELECT messages.id, message, edited, timestamp, username, chatname
-                    FROM messages
-                    INNER JOIN chats ON messages.chat_id = chats.id
-                    INNER JOIN users ON messages.user_id = users.id
-                    WHERE chatname = %s'''
+        query = '''
+            SELECT messages.id, message, edited, timestamp, username, chatname
+            FROM messages
+            INNER JOIN chats ON messages.chat_id = chats.id
+            INNER JOIN users ON messages.user_id = users.id
+            WHERE chatname = %s
+        '''
         
         # The only required argument is the chatname to filter by
         chatname = args.get('chatname')
@@ -44,7 +46,8 @@ class PostgresMessageDAO(MessageDAO):
             VALUES  (%s, %s, %s, 
                     (SELECT id FROM users WHERE username = %s),
                     (SELECT id FROM chats WHERE chatname = %s))
-            RETURNING id;"""
+            RETURNING id;
+        """
         return exec_commit_return(query, message.asList())
 
     def deleteMessage(self, id: int) -> None:

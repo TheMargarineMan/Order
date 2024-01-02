@@ -53,3 +53,5 @@ def exec_commit_return(query, args={}):
             cur.execute(query, args)
             conn.commit()
             return cur.fetchone()[0]
+
+exec_file(Path(__file__).parent / "./schema.sql")
