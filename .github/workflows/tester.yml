@@ -14,4 +14,4 @@ jobs:
         run: docker build -t order:dev -f 'dockerfiles/Dockerfile' ./
 
       - name: Run Docker Container and run test
-        run: docker exec -it $(docker run --rm -d order:dev) /bin/sh -c 'cd api/ && python -m unittest'
+        run: docker exec $(docker run --rm -d order:dev) /bin/sh -c 'cd api/ && python -m unittest'
