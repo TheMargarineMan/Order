@@ -27,7 +27,7 @@ class MessageDAO(ABC):
 class UserDAO(ABC):
 
     @abstractmethod
-    def getSalt(self, username: str) -> str:
+    def getSalt(self, username: str) -> bytes:
         """Returns the salt belonging to the user"""
         pass
 

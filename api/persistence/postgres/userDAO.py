@@ -36,7 +36,7 @@ class PostgresUserDAO(UserDAO):
         """
         return exec_commit(query, (new_username, old_username))
 
-    def getSalt(self, username: str) -> str:
+    def getSalt(self, username: str) -> bytes:
         query = """
             SELECT salt
             FROM users
