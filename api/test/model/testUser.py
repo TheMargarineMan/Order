@@ -57,7 +57,6 @@ class TestUser(TestCase):
         'Morgott'
     ]
     
-    
     def setUp(self):
         self.userAuth = UserAuth(MockUserDAO())
 
