@@ -5,54 +5,54 @@ from model.Message import Message
 class MessageDAO(ABC):
     
     @abstractmethod
-    def getMessages(args: dict) -> list:
+    def getMessages(self, args: dict) -> list:
         """Retrieves messages from persistence following criteria."""
         pass
     
     @abstractmethod
-    def createMessage(message: Message) -> int:
+    def createMessage(self, message: Message) -> int:
         """Creates message in persistence while returning reference id."""
         pass
 
     @abstractmethod
-    def deleteMessage(id: int) -> None:
+    def deleteMessage(self, id: int) -> None:
         """Deletes message from persistence."""
         pass
 
     @abstractmethod
-    def editMessage(message: Message) -> None:
+    def editMessage(self, message: Message) -> None:
         """Modifies existing message in persistence."""
         pass
 
 class UserDAO(ABC):
 
     @abstractmethod
-    def getSalt(username: str) -> str:
+    def getSalt(self, username: str) -> str:
         """Returns the salt belonging to the user"""
         pass
 
     @abstractmethod
-    def checkHash(username: str, pass_hash: bytes) -> bool:
+    def checkHash(self, username: str, pass_hash: bytes) -> bool:
         """Returns whether the password hash matches in persistence"""
         pass
 
     @abstractmethod
-    def getUsers() -> list:
+    def getUsers(self) -> list:
         """Returns a list of all users"""
         pass
 
     @abstractmethod
-    def createUser(username: str, pass_hash: bytes, salt: str) -> None:
+    def createUser(self, username: str, pass_hash: bytes, salt: str) -> None:
         """Creates a user in persistence"""
         pass
 
     @abstractmethod
-    def setPassHash(username: str, pass_hash: bytes, salt: str) -> None:
+    def setPassHash(self, username: str, pass_hash: bytes, salt: str) -> None:
         """Replaces pass_hash and salt for existing user"""
         pass
 
     @abstractmethod
-    def setUsername(old_username: str, new_username: str) -> None:
+    def setUsername(self, old_username: str, new_username: str) -> None:
         """Changes out the username for an existing user"""
         pass
 
