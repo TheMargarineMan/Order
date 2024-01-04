@@ -13,14 +13,14 @@ class PostgresUserDAO(UserDAO):
         # List comprehension is to extract usernames from returned tuples
         return [n[0] for n in exec_get_all(query)]
 
-    def createUser(self, username: str, pass_hash: bytes, salt: str) -> None:
+    def createUser(self, username: str, pass_hash: bytes, salt: bytes) -> None:
         query = """
             INSERT INTO users(username, pass_hash, salt)
             VALUES (%s, %s, %s);
         """
         return exec_commit(query, (username, pass_hash, salt))
 
-    def setPassHash(self, username: str, pass_hash: bytes, salt: str) -> None:
+    def setPassHash(self, username: str, pass_hash: bytes, salt: bytes) -> None:
         query = """
             UPDATE users
             SET pass_hash = %s, salt = %s

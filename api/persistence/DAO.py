@@ -42,12 +42,12 @@ class UserDAO(ABC):
         pass
 
     @abstractmethod
-    def createUser(self, username: str, pass_hash: bytes, salt: str) -> None:
+    def createUser(self, username: str, pass_hash: bytes, salt: bytes) -> None:
         """Creates a user in persistence"""
         pass
 
     @abstractmethod
-    def setPassHash(self, username: str, pass_hash: bytes, salt: str) -> None:
+    def setPassHash(self, username: str, pass_hash: bytes, salt: bytes) -> None:
         """Replaces pass_hash and salt for existing user"""
         pass
 
