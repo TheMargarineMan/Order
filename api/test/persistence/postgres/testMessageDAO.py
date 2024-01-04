@@ -23,7 +23,7 @@ class TestPostgresMessageDAO(TestCase):
     @classmethod
     def setUpClass(self):
         # Loads test data destructively
-        self.resetFile = 'test/persistence/postgres/testData.sql'
+        self.resetFile = 'api/test/persistence/postgres/testData.sql'
         self.messageDAO = PostgresMessageDAO()
         
     @classmethod
