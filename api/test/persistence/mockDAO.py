@@ -23,7 +23,6 @@ class MockUserDAO(UserDAO):
         }
 
     def getSalt(self, username: str) -> bytes:
-        print(type(self.salts[username]))
         return bytes(self.salts[username])
     
     def checkHash(self, username: str, pass_hash: bytes) -> bool:
