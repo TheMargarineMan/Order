@@ -15,12 +15,10 @@ class UserAuth():
         pass_hash = bcrypt.hashpw(bytes(password, 'utf-8'), salt)
         return self.dao.checkHash(username, pass_hash)
 
-    def setUsername(self, old_username: str, new_username: str, password: str):
-        self.checkLogin(old_username, password)
+    def setUsername(self, old_username: str, new_username: str):
         self.dao.setUsername(old_username, new_username)
 
-    def setPassword(self, username: str, old_password: str, new_password: str):
-        self.checkLogin(username, old_password)
+    def setPassword(self, username: str, new_password: str):
         new_salt = bcrypt.gensalt()
         new_hash = bcrypt.hashpw(bytes(new_password, 'utf-8'), new_salt)
         self.dao.setPassHash(username, new_hash, new_salt)

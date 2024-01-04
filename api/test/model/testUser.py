@@ -80,7 +80,7 @@ class TestUser(TestCase):
         old_username = 'Tarnished'
         new_username = 'EldenLord'
         password = '123ABC'
-        self.userAuth.setUsername(old_username, new_username, password)
+        self.userAuth.setUsername(old_username, new_username)
         self.assertFalse(self.userAuth.checkLogin(old_username, password))
         self.assertTrue(self.userAuth.checkLogin(new_username, password))
 
@@ -88,7 +88,7 @@ class TestUser(TestCase):
         username = 'Tarnished'
         old_password = '123ABC'
         new_password = 'ABC123'
-        self.userAuth.setPassword(username, old_password, new_password)
+        self.userAuth.setPassword(username, new_password)
         self.assertTrue(self.userAuth.checkLogin(username, new_password))
         self.assertFalse(self.userAuth.checkLogin(username, old_password))
 
