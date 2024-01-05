@@ -4,7 +4,10 @@ from persistence.DAO import UserDAO
 
 class UserAuth():
 
-    def __init__(self, dao: UserDAO):
+    def assignDAO(self, dao: UserDAO):
+        self.dao = dao
+
+    def __init__(self, dao: UserDAO = None):
         self.dao = dao
 
     def getUsers(self) -> list:
