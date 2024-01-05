@@ -23,10 +23,10 @@ class MockUserDAO(UserDAO):
         }
 
     def getSalt(self, username: str) -> bytes:
-        return bytes(self.salts[username])
+        return bytes(self.salts.get(username, bcrypt.gensalt()))
     
     def checkHash(self, username: str, pass_hash: bytes) -> bool:
-        return self.hash[username] == pass_hash
+        return self.hash.get(username, b'') == pass_hash
 
     def getUsers(self) -> list:
         return list(self.salts.keys())
@@ -43,4 +43,5 @@ class MockUserDAO(UserDAO):
 
     def setUsername(self, old_username, new_username) -> None:
         self.setValues(new_username, self.hash[old_username], self.salts[old_username])
-        self.setValues(old_username, b'', bcrypt.gensalt())
+        del self.hash[old_username]
+        del self.salts[old_username]
