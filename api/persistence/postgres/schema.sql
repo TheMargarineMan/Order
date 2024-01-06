@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY NOT NULL,
     username TEXT UNIQUE NOT NULL,
     pass_hash bytea NOT NULL,
-    salt TEXT NOT NULL
+    salt bytea NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS chats(

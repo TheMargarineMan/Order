@@ -3,11 +3,11 @@ DELETE FROM chats;
 DELETE FROM users;
 
 INSERT INTO users(id, username, pass_hash, salt) VALUES
-(1, 'Tarnished', decode('123ABC', 'hex'), 'salt'),
-(2, 'Radahn', decode('123ABC', 'hex'), 'salt'),
-(3, 'Malenia', decode('123ABC', 'hex'), 'salt'),
-(4, 'Melina', decode('123ABC', 'hex'), 'salt'),
-(5, 'Morgott', decode('123ABC', 'hex'), 'salt');
+(1, 'Tarnished', decode('123ABC', 'hex'), convert_to('salt', 'utf-8')),
+(2, 'Radahn', decode('123ABC', 'hex'), convert_to('salt', 'utf-8')),
+(3, 'Malenia', decode('123ABC', 'hex'), convert_to('salt', 'utf-8')),
+(4, 'Melina', decode('123ABC', 'hex'), convert_to('salt', 'utf-8')),
+(5, 'Morgott', decode('123ABC', 'hex'), convert_to('salt', 'utf-8'));
 
 ALTER SEQUENCE users_id_seq RESTART 6;
 

@@ -16,7 +16,7 @@ class TestPostgresChatDAO(TestCase):
     @classmethod
     def setUpClass(self):
         # Loads test data destructively
-        self.resetFile = 'test/persistence/postgres/testData.sql'
+        self.resetFile = 'api/test/persistence/postgres/testData.sql'
         self.userDAO = PostgresUserDAO()
         
     @classmethod
@@ -37,7 +37,7 @@ class TestPostgresChatDAO(TestCase):
         self.assertEqual(expected, result)
 
     def testGetSalt(self):
-        expected = 'salt'
+        expected = bytes('salt', 'utf-8')
         result = self.userDAO.getSalt('Tarnished')
         self.assertEqual(expected, result)
 
@@ -50,9 +50,11 @@ class TestPostgresChatDAO(TestCase):
         self.assertFalse(result)
 
     def testSetPassHash(self):
-        self.userDAO.setPassHash('Tarnished', bytes.fromhex('321CBA'), 'pepper')
-        self.assertEqual('pepper', self.userDAO.getSalt('Tarnished'))
-        self.assertTrue(self.userDAO.checkHash('Tarnished', bytes.fromhex('321CBA')))
+        newSalt = b'pepper'
+        newHash = bytes.fromhex('321CBA')
+        self.userDAO.setPassHash('Tarnished', newHash, newSalt)
+        self.assertEqual(newSalt, self.userDAO.getSalt('Tarnished'))
+        self.assertTrue(self.userDAO.checkHash('Tarnished', newHash))
 
     def testSetUsername(self):
         self.userDAO.setUsername('Tarnished', 'EldenLord')
@@ -64,11 +66,15 @@ class TestPostgresChatDAO(TestCase):
         self.assertEqual(expected, result)
    
     def testCreateUser(self):
-        self.userDAO.createUser('Radagon', bytes.fromhex('123ABC'), 'salt')
+        username = 'Radagon'
+        pass_hash = bytes.fromhex('123ABC')
+        salt = b'salt'
+
+        self.userDAO.createUser(username, pass_hash, salt)
         
-        expected = [*self.users, 'Radagon']
+        expected = [*self.users, username]
         result = self.userDAO.getUsers()
 
         self.assertEqual(expected, result)
-        self.assertTrue(self.userDAO.checkHash('Radagon', bytes.fromhex('123ABC')))
-        self.assertEqual('salt', self.userDAO.getSalt('Radagon'))
+        self.assertTrue(self.userDAO.checkHash(username, pass_hash))
+        self.assertEqual(salt, self.userDAO.getSalt(username))
