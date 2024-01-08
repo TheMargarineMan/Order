@@ -5,6 +5,13 @@ from model.Message import Message
 from test.persistence.mockDAO import MockMessageDAO
 
 class TestMessageDAO(TestCase):
+    """
+    This test class is for the testing of implementations of MessageDAO.
+    This test class by default tests the MockMessageDAO implementation.
+    This test class can be inherited in order to perform tests on other
+    implementations of MessageDAO, as long as the setUp(), setUpClass() 
+    and tearDownClass() methods are properly defined in the child tester.
+    """
 
     data = [
         (1, 'Fools emboldened by the flame of ambition.', False, datetime(2012, 7, 17 ,10, 0, 0), 'Morgott'),

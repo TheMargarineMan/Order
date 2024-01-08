@@ -3,6 +3,13 @@ from unittest import TestCase
 from test.persistence.mockDAO import MockUserDAO
 
 class TestUserDAO(TestCase):
+    """
+    This test class is for the testing of implementations of UserDAO.
+    This test class by default tests the MockUserDAO implementation.
+    This test class can be inherited in order to perform tests on other
+    implementations of UserDAO, as long as the setUp(), setUpClass() 
+    and tearDownClass() methods are properly defined in the child tester.
+    """
 
     users = [
         'Tarnished',
