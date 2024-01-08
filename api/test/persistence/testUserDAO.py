@@ -45,8 +45,7 @@ class TestUserDAO(TestCase):
     def testSetUsername(self):
         self.userDAO.setUsername('Tarnished', 'EldenLord')
         
-        expected = self.users
-        expected[0] = 'EldenLord'
+        expected = ['EldenLord', *self.users[1:]]
         result = self.userDAO.getUsers()
 
         self.assertEqual(expected, result)
