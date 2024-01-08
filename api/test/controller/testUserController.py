@@ -83,7 +83,7 @@ class TestUserController(TestCase):
                         {'username': new_username, 'password': password})
 
         # Verify Full Userlist
-        expected = [*self.users[1:], 'EldenLord']
+        expected = ['EldenLord', *self.users[1:]]
         result = testHttpRequest(self, '/users', 'GET', {}, {})
         self.assertEqual(expected, result)
 
