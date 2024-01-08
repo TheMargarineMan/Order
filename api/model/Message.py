@@ -2,7 +2,7 @@ from datetime import datetime
 
 class Message():
     """Object for storing messages and related metadata"""
-    __slots__ = ('id', 'message', 'edited', 'timestamp', 'username', 'chatname')
+    __slots__ = ('id', 'message', 'edited', 'timestamp', 'username')
 
     def __init__(self, data):
         if (type(data) == dict):
@@ -11,7 +11,6 @@ class Message():
             self.edited = data.get('edited')
             self.timestamp = data.get('timestamp')
             self.username = data.get('username')
-            self.chatname = data.get('chatname')
 
         elif (type(data) == list):
             self.id = data[0]
@@ -19,13 +18,11 @@ class Message():
             self.edited = data[2]
             self.timestamp = data[3]
             self.username = data[4]
-            self.chatname = data[5]
 
     def asList(self) -> list:
         return [
             self.message,
             self.edited,
             self.timestamp,
-            self.username,
-            self.chatname
+            self.username
         ]

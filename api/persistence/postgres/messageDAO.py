@@ -5,19 +5,15 @@ from .__init__ import *
 
 class PostgresMessageDAO(MessageDAO):
 
-    def getMessages(self, args: dict) -> list:
+    def getMessages(self, chatname: str, args: dict = {}) -> list[Message]:
         # Initial query to be modified
         query = '''
-            SELECT messages.id, message, edited, timestamp, username, chatname
+            SELECT messages.id, message, edited, timestamp, username
             FROM messages
             INNER JOIN chats ON messages.chat_id = chats.id
             INNER JOIN users ON messages.user_id = users.id
             WHERE chatname = %s
         '''
-        
-        # The only required argument is the chatname to filter by
-        chatname = args.get('chatname')
-
         # Arguments that will be passed alongside the query
         query_args = [chatname] 
 
@@ -40,7 +36,7 @@ class PostgresMessageDAO(MessageDAO):
         """
         return exec_get_all(query, query_args)
     
-    def createMessage(self, message: Message) -> int:
+    def createMessage(self, chatname: str, message: Message) -> int:
         query = """
             INSERT INTO messages(message, edited, timestamp, user_id, chat_id)
             VALUES  (%s, %s, %s, 
@@ -48,19 +44,21 @@ class PostgresMessageDAO(MessageDAO):
                     (SELECT id FROM chats WHERE chatname = %s))
             RETURNING id;
         """
-        return exec_commit_return(query, message.asList())
+        return exec_commit_return(query, (*message.asList(), chatname))
 
-    def deleteMessage(self, id: int) -> None:
+    def deleteMessage(self, chatname: str, id: int) -> None:
         query = """
             DELETE FROM messages
-            WHERE id = %s;
+            WHERE id = %s
+            AND chat_id = (SELECT id FROM chats WHERE chatname = %s);
         """
-        exec_commit(query, (id,))
+        exec_commit(query, (id, chatname))
         
-    def editMessage(self, message: Message) -> None:
+    def editMessage(self, chatname: str, message: Message) -> None:
         query = """
             UPDATE messages
             SET message = %s, edited = True
-            WHERE id = %s;
+            WHERE id = %s
+            AND chat_id = (SELECT id FROM chats WHERE chatname = %s);
         """
-        exec_commit(query, (message.message, message.id))
+        exec_commit(query, (message.message, message.id, chatname))

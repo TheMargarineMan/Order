@@ -5,22 +5,22 @@ from model.Message import Message
 class MessageDAO(ABC):
     
     @abstractmethod
-    def getMessages(self, args: dict) -> list:
+    def getMessages(self, chatname: str, args: dict) -> list:
         """Retrieves messages from persistence following criteria."""
         pass
     
     @abstractmethod
-    def createMessage(self, message: Message) -> int:
+    def createMessage(self, chatname: str, message: Message) -> int:
         """Creates message in persistence while returning reference id."""
         pass
 
     @abstractmethod
-    def deleteMessage(self, id: int) -> None:
+    def deleteMessage(self, chatname: str, id: int) -> None:
         """Deletes message from persistence."""
         pass
 
     @abstractmethod
-    def editMessage(self, message: Message) -> None:
+    def editMessage(self, chatname: str, message: Message) -> None:
         """Modifies existing message in persistence."""
         pass
 
