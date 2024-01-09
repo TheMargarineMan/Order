@@ -54,18 +54,18 @@ class MockUserDAO(UserDAO):
 class MockMessageDAO(MessageDAO):
     def __init__(self):
         self.erdtree = {
-            1: [1, 'Fools emboldened by the flame of ambition.', False, datetime(2012, 7, 17 ,10, 0, 0), 'Morgott'],
-            2: [2, 'My brother in Marika you wear rags and you call yourself "King".', False, datetime(2012, 7, 17, 10, 0, 10), 'Tarnished'],
-            3: [3, '*Bodies Morgott*', False, datetime(2012, 7, 17, 10, 3, 0), 'Tarnished'],
-            4: [4, 'Literally how. Nah he hacking get him out.', False, datetime(2012, 7, 17, 10, 3, 15), 'Morgott'],
-            5: [5, 'L Bozo + mad + skill issue + golden order fell off + go back to the sewers', False, datetime(2012, 7, 17, 10, 3, 20), 'Tarnished']
+            1: (1, 'Fools emboldened by the flame of ambition.', False, datetime(2012, 7, 17 ,10, 0, 0), 'Morgott'),
+            2: (2, 'My brother in Marika you wear rags and you call yourself "King".', False, datetime(2012, 7, 17, 10, 0, 10), 'Tarnished'),
+            3: (3, '*Bodies Morgott*', False, datetime(2012, 7, 17, 10, 3, 0), 'Tarnished'),
+            4: (4, 'Literally how. Nah he hacking get him out.', False, datetime(2012, 7, 17, 10, 3, 15), 'Morgott'),
+            5: (5, 'L Bozo + mad + skill issue + golden order fell off + go back to the sewers', False, datetime(2012, 7, 17, 10, 3, 20), 'Tarnished')
         }
         self.radahns = {
-            6: [6, 'GRARARRHRHHRHHR', False, datetime(2012, 7, 23, 13, 0, 0), 'Radahn'],
-            7: [7, 'Bro why is he growling. Ur not him', False, datetime(2012, 7, 23, 13, 0, 5), 'Tarnished'],
-            8: [8, 'GUH!!!', False, datetime(2012, 7, 23, 13, 2, 12), 'Radahn'],
-            9: [9, '*Bodies Radahn*', False, datetime(2012, 7, 23, 13, 5, 32), 'Tarnished'],
-            10: [10, 'Imagine learning gravity magic just to be beat by a guy with a stick.', False, datetime(2012, 7, 23, 13, 5, 45), 'Tarnished']
+            6: (6, 'GRARARRHRHHRHHR', False, datetime(2012, 7, 23, 13, 0, 0), 'Radahn'),
+            7: (7, 'Bro why is he growling. Ur not him', False, datetime(2012, 7, 23, 13, 0, 5), 'Tarnished'),
+            8: (8, 'GUH!!!', False, datetime(2012, 7, 23, 13, 2, 12), 'Radahn'),
+            9: (9, '*Bodies Radahn*', False, datetime(2012, 7, 23, 13, 5, 32), 'Tarnished'),
+            10: (10, 'Imagine learning gravity magic just to be beat by a guy with a stick.', False, datetime(2012, 7, 23, 13, 5, 45), 'Tarnished')
         }
         self.grand = {}
         self.id_seq = 10
@@ -108,7 +108,7 @@ class MockMessageDAO(MessageDAO):
 
         messages.sort(reverse=True, key=lambda x: x[0])
 
-        return [tuple(n) for n in messages]
+        return messages
 
     def createMessage(self, chatname: str, message: Message):
         message.timestamp = self.parseTime(message.timestamp)
@@ -118,9 +118,10 @@ class MockMessageDAO(MessageDAO):
 
     def editMessage(self, chatname: str, message: Message):
         chatroom = self.retrieveChatroom(chatname)
-        persistMessage = chatroom[message.id]
+        persistMessage = list(chatroom[message.id])
         persistMessage[2] = True
         persistMessage[1] = message.message
+        chatroom[message.id] = tuple(persistMessage)
 
     def deleteMessage(self, chatname: str, id: int):
         chatroom = self.retrieveChatroom(chatname)
