@@ -80,7 +80,7 @@ class MockMessageDAO(MessageDAO):
                 return self.grand
 
     def parseTime(self, timestamp: str):
-        date, time = timestamp.split(' ')
+        date, time = timestamp.split('T')
         year, month, day = date.split('-')
         hour, minute, second = time.split(':')
         return datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))

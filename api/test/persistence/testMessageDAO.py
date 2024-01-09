@@ -72,7 +72,7 @@ class TestMessageDAO(TestCase):
 
     def testGetMessageBefore(self):
         chatname = 'Erdtree Sanctuary'
-        args = { 'before': '2012-7-17 10:03:10' }
+        args = { 'before': '2012-7-17T10:03:10' }
         
         expected = self.data[2::-1]
         result = self.messageDAO.getMessages(chatname, args)
@@ -81,7 +81,7 @@ class TestMessageDAO(TestCase):
 
     def testGetMessageAfter(self):
         chatname = 'Erdtree Sanctuary'
-        args = { 'after': '2012-7-17 10:03:10' }
+        args = { 'after': '2012-7-17T10:03:10' }
         
         expected = self.data[4:2:-1]
         result = self.messageDAO.getMessages(chatname, args)
@@ -102,7 +102,7 @@ class TestMessageDAO(TestCase):
         message = Message({
             "message": "Shadow Wizard Money Gang",
             "edited": False,
-            "timestamp": '2012-7-18 10:0:0',
+            "timestamp": '2012-7-18T10:0:0',
             "username": "Melina"
         })
 
