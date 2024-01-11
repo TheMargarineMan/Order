@@ -1,14 +1,16 @@
 from __future__ import absolute_import
-from controller import userController
+from controller import userController, messageController
 from unittest import TestCase
-from test.persistence.mockDAO import MockUserDAO
+from test.persistence.mockDAO import MockUserDAO, MockMessageDAO
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 userController.assignDAO(MockUserDAO())
+messageController.assignDAO(MockMessageDAO())
 
 app = FastAPI()
 app.include_router(userController.router)
+app.include_router(messageController.router, prefix='/chat/{chatname}')
 
 testClient = TestClient(app)
 

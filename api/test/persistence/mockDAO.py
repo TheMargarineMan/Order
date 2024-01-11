@@ -108,7 +108,7 @@ class MockMessageDAO(MessageDAO):
 
         messages.sort(reverse=True, key=lambda x: x[0])
 
-        return messages
+        return [tuple(n) for n in messages]
 
     def createMessage(self, chatname: str, message: Message):
         message.timestamp = self.parseTime(message.timestamp)
